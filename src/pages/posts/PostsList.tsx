@@ -6,8 +6,6 @@ import PostItem from "./PostItem";
 const List = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
-  margin: 0 auto;
 `;
 
 interface Props {
