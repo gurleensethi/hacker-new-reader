@@ -12,7 +12,6 @@ interface PostsState {
   topStories: number[];
   displayPosts: HackerPost[];
   pageNumber: number;
-  pageSize: number;
   err?: string;
 }
 
@@ -39,7 +38,6 @@ const initialState: PostsState = {
   displayPosts: [],
   err: undefined,
   pageNumber: 0,
-  pageSize: 10,
 };
 
 const postsSlice = createSlice({
@@ -104,8 +102,8 @@ export const fetchPostsByIds = (ids: number[]): AppThunk => {
 export const fetchTopStories = (): AppThunk => {
   return async (dispatch, getState) => {
     const state = getState();
-    const start = state.posts.pageNumber * state.posts.pageSize;
-    const end = start + state.posts.pageSize;
+    const start = state.posts.pageNumber * state.settings.data.pageSize;
+    const end = start + state.settings.data.pageSize;
 
     let selectedPostsIds: number[];
 

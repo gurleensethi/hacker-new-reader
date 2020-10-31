@@ -7,7 +7,7 @@ import PostsList from "./PostsList";
 
 const Container = styled.div``;
 
-const HomePage: FunctionComponent = () => {
+const PostsPage: FunctionComponent = () => {
   const dispatch = useDispatch();
   const { isFetching, displayPosts, err } = useSelector(
     (state: RootState) => state.posts
@@ -26,4 +26,4 @@ const HomePage: FunctionComponent = () => {
   );
 };
 
-export default HomePage;
+export default PostsPage;

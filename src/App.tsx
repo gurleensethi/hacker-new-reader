@@ -1,8 +1,9 @@
-import React, { FunctionComponent } from "react";
-import { Provider } from "react-redux";
+import React, { FunctionComponent, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import HomePage from "./pages/posts/PostsPage";
-import store from "./store";
+import { loadSettingsFromStorage } from "./features/settings/settings.slice";
+import HomePage from "./pages/home/HomePage";
+import { RootState } from "./reducer";
 
 const Container = styled.div`
   @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;700&display=swap");
@@ -11,11 +12,22 @@ const Container = styled.div`
 `;
 
 const App: FunctionComponent = () => {
+  const dispatch = useDispatch();
+  const settingsLoaded = useSelector(
+    (state: RootState) => state.settings.settingsLoaded
+  );
+
+  useEffect(() => {
+    dispatch(loadSettingsFromStorage());
+  }, [dispatch]);
+
+  if (!settingsLoaded) {
+    return null;
+  }
+
   return (
     <Container>
-      <Provider store={store}>
-        <HomePage />
-      </Provider>
+      <HomePage />
     </Container>
   );
 };
