@@ -4,6 +4,59 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import breakPoints from "../../config/break-points";
 
+interface Props {
+  post: HackerPost;
+  onOptionsClick: () => void;
+}
+
+const PostItem: React.FC<Props> = ({ post, onOptionsClick }) => {
+  const handleOptionsClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    onOptionsClick();
+  };
+
+  return (
+    <>
+      <Container href={post.url} target="_blank" rel="noopener noreferrer">
+        <Content>
+          <Main>
+            <Title>{post.title}</Title>
+          </Main>
+          <Info>
+            <Date>{dayjs(post.time * 1000).format("ddd DD/MM/YYYY")}</Date>
+            <Comments>{post.descendants}</Comments>
+            <img
+              src={process.env.PUBLIC_URL + "/images/comment.svg"}
+              alt="comment icon"
+              height="16"
+            />
+            <Score>{post.score}</Score>
+            <img
+              src={process.env.PUBLIC_URL + "/images/score.svg"}
+              alt="comment icon"
+              height="16"
+            />
+          </Info>
+        </Content>
+        <Options>
+          <MoreOptionsIcon
+            onClick={handleOptionsClick}
+            src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
+            alt="comment icon"
+          />
+          <OpenIcon
+            src={process.env.PUBLIC_URL + "/images/open-in-new.svg"}
+            alt="comment icon"
+          />
+        </Options>
+      </Container>
+    </>
+  );
+};
+
+export default PostItem;
+
 const OpenIcon = styled.img`
   opacity: 0;
   transition: 0.3s;
@@ -24,7 +77,7 @@ const Container = styled.a`
   border-radius: 6px;
   transition: 0.3s;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   text-decoration: none;
   color: black;
   outline: none;
@@ -98,39 +151,19 @@ const Score = styled.div`
   min-width: 30px;
 `;
 
-interface Props {
-  post: HackerPost;
-}
+const Options = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
 
-const PostItem: React.FC<Props> = ({ post }) => {
-  return (
-    <Container href={post.url} target="_blank" rel="noopener noreferrer">
-      <Content>
-        <Main>
-          <Title>{post.title}</Title>
-        </Main>
-        <Info>
-          <Date>{dayjs(post.time * 1000).format("ddd DD/MM/YYYY")}</Date>
-          <Comments>{post.descendants}</Comments>
-          <img
-            src={process.env.PUBLIC_URL + "/images/comment.svg"}
-            alt="comment icon"
-            height="16"
-          />
-          <Score>{post.score}</Score>
-          <img
-            src={process.env.PUBLIC_URL + "/images/score.svg"}
-            alt="comment icon"
-            height="16"
-          />
-        </Info>
-      </Content>
-      <OpenIcon
-        src={process.env.PUBLIC_URL + "/images/open-in-new.svg"}
-        alt="comment icon"
-      />
-    </Container>
-  );
-};
+const MoreOptionsIcon = styled.img`
+  border-radius: 24px;
+  height: 32px;
+  padding: 4px;
+  transition: 0.3s;
 
-export default PostItem;
+  &:hover {
+    background-color: #e1e1e1;
+  }
+`;
