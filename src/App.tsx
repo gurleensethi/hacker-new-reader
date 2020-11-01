@@ -6,8 +6,6 @@ import HomePage from "./pages/home/HomePage";
 import { RootState } from "./reducer";
 
 const Container = styled.div`
-  @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;700&display=swap");
-
   font-family: "Raleway", sans-serif;
 `;
 
