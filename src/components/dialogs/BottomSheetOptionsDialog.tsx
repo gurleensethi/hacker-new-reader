@@ -9,7 +9,7 @@ interface Option {
 
 interface Props {
   isOpen: boolean;
-  onDialogClose: () => void;
+  onClose: () => void;
   className?: string;
   options: Option[];
   onOptionClicked: (key: string) => void;
@@ -18,7 +18,7 @@ interface Props {
 const BottomSheetOptionsDialog: React.FC<Props> = ({
   isOpen,
   className,
-  onDialogClose,
+  onClose,
   options,
   onOptionClicked,
 }) => {
@@ -33,7 +33,7 @@ const BottomSheetOptionsDialog: React.FC<Props> = ({
   }, [isOpen]);
 
   const handleDialogClose = () => {
-    onDialogClose();
+    onClose();
   };
 
   const handleContentClick = (e: React.MouseEvent<HTMLDivElement>) => {

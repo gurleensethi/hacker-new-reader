@@ -1,19 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { HackerPost } from "../../api/hackerNewsApi";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import breakPoints from "../../config/break-points";
+import breakPoints, { DeviceType } from "../../config/break-points";
+import DropdownMenu from "../../components/dropdown/DropdownMenu";
+import BottomSheetOptionsDialog from "../../components/dialogs/BottomSheetOptionsDialog";
+import useDeviceType from "../../hooks/useDeviceType";
 
 interface Props {
   post: HackerPost;
-  onOptionsClick: () => void;
 }
 
-const PostItem: React.FC<Props> = ({ post, onOptionsClick }) => {
+const menuOptions = [
+  {
+    name: "Save for later",
+    key: "save_later",
+    iconUrl: process.env.PUBLIC_URL + "/images/save.svg",
+  },
+];
+
+const PostItem: React.FC<Props> = ({ post }) => {
+  const [isOptionsMenuOpen, setOptionsMenuOpen] = useState(false);
+  const deviceType = useDeviceType();
+
+  console.log(deviceType);
+
+  const handleDialogClose = () => {
+    setOptionsMenuOpen(false);
+  };
+
   const handleOptionsClick = (e: React.MouseEvent<HTMLImageElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    onOptionsClick();
+    setOptionsMenuOpen(true);
   };
 
   return (
@@ -40,11 +59,36 @@ const PostItem: React.FC<Props> = ({ post, onOptionsClick }) => {
           </Info>
         </Content>
         <Options>
-          <MoreOptionsIcon
-            onClick={handleOptionsClick}
-            src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
-            alt="comment icon"
-          />
+          {deviceType === DeviceType.MOBILE ? (
+            <>
+              <MoreOptionsIcon
+                onClick={handleOptionsClick}
+                src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
+                alt="comment icon"
+              />
+              <BottomSheetOptionsDialog
+                isOpen={isOptionsMenuOpen}
+                onClose={handleDialogClose}
+                options={menuOptions}
+                onOptionClicked={(key: string) => {}}
+              />{" "}
+            </>
+          ) : (
+            <DropdownMenu
+              alignment="right"
+              isOpen={isOptionsMenuOpen}
+              onClose={handleDialogClose}
+              options={menuOptions}
+              onOptionClick={(key: string) => {}}
+              icon={() => (
+                <MoreOptionsIcon
+                  onClick={handleOptionsClick}
+                  src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
+                  alt="comment icon"
+                />
+              )}
+            />
+          )}
           <OpenIcon
             src={process.env.PUBLIC_URL + "/images/open-in-new.svg"}
             alt="comment icon"
