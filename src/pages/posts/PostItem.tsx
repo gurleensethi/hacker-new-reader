@@ -23,8 +23,6 @@ const PostItem: React.FC<Props> = ({ post }) => {
   const [isOptionsMenuOpen, setOptionsMenuOpen] = useState(false);
   const deviceType = useDeviceType();
 
-  console.log(deviceType);
-
   const handleDialogClose = () => {
     setOptionsMenuOpen(false);
   };
@@ -71,7 +69,7 @@ const PostItem: React.FC<Props> = ({ post }) => {
                 onClose={handleDialogClose}
                 options={menuOptions}
                 onOptionClicked={(key: string) => {}}
-              />{" "}
+              />
             </>
           ) : (
             <DropdownMenu
