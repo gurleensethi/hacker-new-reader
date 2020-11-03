@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface Option {
@@ -22,6 +22,8 @@ const BottomSheetOptionsDialog: React.FC<Props> = ({
   options,
   onOptionClicked,
 }) => {
+  const [isClosing, setClosing] = useState(false);
+
   useEffect(() => {
     if (isOpen) {
       const originalOverflow = document.body.style.overflow;
@@ -32,13 +34,20 @@ const BottomSheetOptionsDialog: React.FC<Props> = ({
     }
   }, [isOpen]);
 
-  const handleDialogClose = () => {
-    onClose();
+  const handleDialogClose = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setClosing(true);
+    setTimeout(() => {
+      setClosing(false);
+      onClose();
+    }, 300);
   };
 
   const handleContentClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // Prevent the click from going to dialog root
     e.stopPropagation();
+    e.preventDefault();
   };
 
   if (!isOpen) {
@@ -48,7 +57,12 @@ const BottomSheetOptionsDialog: React.FC<Props> = ({
   return (
     <div className={className}>
       <div className="dialog" onClick={handleDialogClose}>
-        <div className="dialog__content" onClick={handleContentClick}>
+        <div
+          className={`dialog__content  dialog__content--${
+            isClosing ? "exiting" : "entering"
+          }`}
+          onClick={handleContentClick}
+        >
           <div className="options">
             {options.map((option) => {
               return (
@@ -94,6 +108,14 @@ const component = styled(BottomSheetOptionsDialog)`
     overflow-y: scroll;
   }
 
+  .dialog__content--entering {
+    animation: enterAnimation 0.3s forwards;
+  }
+
+  .dialog__content--exiting {
+    animation: exitAnimation 0.3s forwards;
+  }
+
   .options__item {
     display: flex;
     align-items: center;
@@ -112,6 +134,26 @@ const component = styled(BottomSheetOptionsDialog)`
   }
 
   .options__item__name {
+  }
+
+  @keyframes enterAnimation {
+    from {
+      bottom: -50%;
+    }
+
+    to {
+      bottom: 0;
+    }
+  }
+
+  @keyframes exitAnimation {
+    from {
+      bottom: 0;
+    }
+
+    to {
+      bottom: -50%;
+    }
   }
 `;
 

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import useClickAway from "../../hooks/useClickAway";
 
@@ -28,21 +28,18 @@ const DropdownMenu: React.FC<Props> = ({
   onClose,
   icon,
 }) => {
+  const [isClosing, setClosing] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   function handleClickAway() {
-    onClose();
+    setClosing(true);
+    setTimeout(() => {
+      setClosing(false);
+      onClose();
+    }, 300);
   }
 
   useClickAway(rootRef, handleClickAway, isOpen);
-
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     document.addEventListener("mousedown", handleClick, false);
-  //     return () =>
-  //       document.removeEventListener("mousedown", handleClick, false);
-  //   }
-  // }, [isOpen, onClose]);
 
   const handleOptionClick = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -57,7 +54,10 @@ const DropdownMenu: React.FC<Props> = ({
     <div className={className} ref={rootRef}>
       {icon()}
       {isOpen && (
-        <div className="options">
+        <div
+          className={`options options--${isClosing ? "exiting" : "entering"}`}
+          style={{ top: rootRef.current?.offsetHeight }}
+        >
           {options.map((option) => {
             return (
               <button
@@ -95,6 +95,14 @@ export default styled(DropdownMenu)`
     ${(props) => props.alignment && `${props.alignment}: 0px`}
   }
 
+  .options--entering {
+    animation: enterAnimation 0.3s;
+  }
+
+  .options--exiting {
+    animation: exitAnimation 0.3s;
+  }
+
   .options__item {
     background: none;
     border: none;
@@ -115,5 +123,37 @@ export default styled(DropdownMenu)`
 
   .options__item__name {
     font-size: 18px;
+  }
+
+  @keyframes enterAnimation {
+    from {
+      opacity: 0;
+      border-bottom-left-radius: 100%;
+      border-bottom-right-radius: 100%;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      transform: translateY(0px);
+    }
+  }
+
+  @keyframes exitAnimation {
+    from {
+      opacity: 1;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      transform: translateY(0px);
+    }
+
+    to {
+      opacity: 0;
+      border-bottom-left-radius: 100%;
+      border-bottom-right-radius: 100%;
+      transform: translateY(-10px);
+    }
   }
 `;
