@@ -9,6 +9,7 @@ import useDeviceType from "../../hooks/useDeviceType";
 
 interface Props {
   post: HackerPost;
+  onSavePostClicked: () => void;
 }
 
 const menuOptions = [
@@ -19,7 +20,7 @@ const menuOptions = [
   },
 ];
 
-const PostItem: React.FC<Props> = ({ post }) => {
+const PostItem: React.FC<Props> = ({ post, onSavePostClicked }) => {
   const [isOptionsMenuOpen, setOptionsMenuOpen] = useState(false);
   const deviceType = useDeviceType();
 
@@ -31,6 +32,16 @@ const PostItem: React.FC<Props> = ({ post }) => {
     e.stopPropagation();
     e.preventDefault();
     setOptionsMenuOpen(true);
+  };
+
+  const handleMenuOptionClicked = (key: string) => {
+    switch (key) {
+      case "save_later": {
+        onSavePostClicked();
+        break;
+      }
+    }
+    setOptionsMenuOpen(false);
   };
 
   return (
@@ -68,7 +79,7 @@ const PostItem: React.FC<Props> = ({ post }) => {
                 isOpen={isOptionsMenuOpen}
                 onClose={handleDialogClose}
                 options={menuOptions}
-                onOptionClicked={(key: string) => {}}
+                onOptionClicked={handleMenuOptionClicked}
               />
             </>
           ) : (
@@ -77,7 +88,7 @@ const PostItem: React.FC<Props> = ({ post }) => {
               isOpen={isOptionsMenuOpen}
               onClose={handleDialogClose}
               options={menuOptions}
-              onOptionClick={(key: string) => {}}
+              onOptionClick={handleMenuOptionClicked}
               icon={() => (
                 <MoreOptionsIcon
                   onClick={handleOptionsClick}

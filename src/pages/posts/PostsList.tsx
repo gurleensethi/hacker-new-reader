@@ -16,14 +16,19 @@ const List = styled.div`
 
 interface Props {
   posts: HackerPost[];
+  onSavePostClicked: (post: HackerPost) => void;
 }
 
-const PostsList: React.FC<Props> = ({ posts }) => {
+const PostsList: React.FC<Props> = ({ posts, onSavePostClicked }) => {
   return (
     <>
       <List>
         {posts.map((post) => (
-          <PostItem key={post.id} post={post} />
+          <PostItem
+            key={post.id}
+            post={post}
+            onSavePostClicked={() => onSavePostClicked(post)}
+          />
         ))}
       </List>
     </>
