@@ -128,15 +128,11 @@ export default styled(DropdownMenu)`
   @keyframes enterAnimation {
     from {
       opacity: 0;
-      border-bottom-left-radius: 100%;
-      border-bottom-right-radius: 100%;
       transform: translateY(-10px);
     }
 
     to {
       opacity: 1;
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
       transform: translateY(0px);
     }
   }
@@ -144,15 +140,11 @@ export default styled(DropdownMenu)`
   @keyframes exitAnimation {
     from {
       opacity: 1;
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
       transform: translateY(0px);
     }
 
     to {
       opacity: 0;
-      border-bottom-left-radius: 100%;
-      border-bottom-right-radius: 100%;
       transform: translateY(-10px);
     }
   }
