@@ -73,7 +73,7 @@ const PostItem: React.FC<Props> = ({ post, onSavePostClicked, isSaved }) => {
                 onClose={handleDialogClose}
                 options={[
                   {
-                    name: "Save for later",
+                    name: isSaved ? "Already Saved" : "Save for later",
                     key: "save_later",
                     iconUrl: process.env.PUBLIC_URL + "/images/save.svg",
                     disabled: isSaved,
@@ -89,7 +89,7 @@ const PostItem: React.FC<Props> = ({ post, onSavePostClicked, isSaved }) => {
               onClose={handleDialogClose}
               options={[
                 {
-                  name: "Save for later",
+                  name: isSaved ? "Already Saved" : "Save for later",
                   key: "save_later",
                   iconUrl: process.env.PUBLIC_URL + "/images/save.svg",
                   disabled: isSaved,
@@ -146,10 +146,6 @@ const Container = styled.a`
     cursor: pointer;
     box-shadow: 0px 4px 10px rgb(230, 230, 230),
       -4px 4px 10px rgb(230, 230, 230), 4px 4px 10px rgb(230, 230, 230);
-  }
-
-  &:active {
-    background-color: rgb(220, 220, 220);
   }
 
   ${breakPoints.tablet} {
