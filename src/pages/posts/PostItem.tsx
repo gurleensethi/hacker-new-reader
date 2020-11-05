@@ -43,6 +43,7 @@ const PostItem: React.FC<Props> = ({ post, onSavePostClicked, isSaved }) => {
         <Content>
           <Main>
             <Title>{post.title}</Title>
+            <Hostname>{post.hostname}</Hostname>
           </Main>
           <Info>
             <Date>{dayjs(post.time * 1000).format("ddd DD/MM/YYYY")}</Date>
@@ -164,12 +165,21 @@ const Content = styled.div`
 `;
 
 const Main = styled.div`
+  display: flex;
   flex: 1;
+  margin-bottom: 12px;
+  align-items: flex-start;
+  flex-direction: column;
 `;
 
 const Title = styled.div`
   font-size: 22px;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
+`;
+
+const Hostname = styled.div`
+  font-size: 12px;
+  color: #999999;
 `;
 
 const Info = styled.div`

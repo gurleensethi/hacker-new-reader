@@ -9,6 +9,7 @@ export interface HackerPost {
   title: string;
   type: string;
   url: string;
+  hostname?: string;
 }
 
 export async function getTopStories(): Promise<number[]> {
@@ -16,5 +17,12 @@ export async function getTopStories(): Promise<number[]> {
 }
 
 export async function getPostById(id: number): Promise<HackerPost> {
-  return fetch(BASE_URL + `/item/${id}.json`).then((data) => data.json());
+  return fetch(BASE_URL + `/item/${id}.json`)
+    .then((data) => data.json())
+    .then((post) => {
+      if (post.url) {
+        post.hostname = new URL(post.url).hostname;
+      }
+      return post;
+    });
 }
