@@ -10,17 +10,10 @@ import useDeviceType from "../../hooks/useDeviceType";
 interface Props {
   post: HackerPost;
   onSavePostClicked: () => void;
+  isSaved: boolean;
 }
 
-const menuOptions = [
-  {
-    name: "Save for later",
-    key: "save_later",
-    iconUrl: process.env.PUBLIC_URL + "/images/save.svg",
-  },
-];
-
-const PostItem: React.FC<Props> = ({ post, onSavePostClicked }) => {
+const PostItem: React.FC<Props> = ({ post, onSavePostClicked, isSaved }) => {
   const [isOptionsMenuOpen, setOptionsMenuOpen] = useState(false);
   const deviceType = useDeviceType();
 
@@ -78,7 +71,14 @@ const PostItem: React.FC<Props> = ({ post, onSavePostClicked }) => {
               <BottomSheetOptionsDialog
                 isOpen={isOptionsMenuOpen}
                 onClose={handleDialogClose}
-                options={menuOptions}
+                options={[
+                  {
+                    name: "Save for later",
+                    key: "save_later",
+                    iconUrl: process.env.PUBLIC_URL + "/images/save.svg",
+                    disabled: isSaved,
+                  },
+                ]}
                 onOptionClicked={handleMenuOptionClicked}
               />
             </>
@@ -87,7 +87,14 @@ const PostItem: React.FC<Props> = ({ post, onSavePostClicked }) => {
               alignment="right"
               isOpen={isOptionsMenuOpen}
               onClose={handleDialogClose}
-              options={menuOptions}
+              options={[
+                {
+                  name: "Save for later",
+                  key: "save_later",
+                  iconUrl: process.env.PUBLIC_URL + "/images/save.svg",
+                  disabled: isSaved,
+                },
+              ]}
               onOptionClick={handleMenuOptionClicked}
               icon={() => (
                 <MoreOptionsIcon

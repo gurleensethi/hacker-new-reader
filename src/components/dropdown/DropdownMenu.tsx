@@ -8,6 +8,7 @@ interface Option {
   name: string;
   key: string;
   iconUrl: string;
+  disabled?: boolean;
 }
 
 interface Props {
@@ -61,9 +62,12 @@ const DropdownMenu: React.FC<Props> = ({
           {options.map((option) => {
             return (
               <button
-                className="options__item"
+                className={`options__item ${
+                  option.disabled && "options__item--disabled"
+                }`}
                 key={option.key}
                 onClick={(e) => handleOptionClick(e, option.key)}
+                disabled={option.disabled}
               >
                 <img
                   className="options__item__icon"
@@ -114,6 +118,14 @@ export default styled(DropdownMenu)`
   .options__item:hover {
     cursor: pointer;
     background-color: #ebebeb;
+  }
+
+  .options__item--disabled {
+    opacity: 0.5;
+  }
+
+  .options__item--disabled:hover {
+    cursor: auto;
   }
 
   .options__item__icon {

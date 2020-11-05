@@ -26,7 +26,7 @@ class SavedPostsService {
   }
 
   public savePost(post: HackerPost): void {
-    this.savedPosts.unshift(post);
+    this.savedPosts = [post, ...this.savedPosts];
     this.saveToLocalStorage();
   }
 

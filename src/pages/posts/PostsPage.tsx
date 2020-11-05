@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { HackerPost } from "../../api/hackerNewsApi";
 import { fetchTopStories } from "../../features/posts/posts.slice";
-import { savePost } from "../../features/saved-posts/saved-posts.slice";
+import {
+  loadSavedPosts,
+  savePost,
+} from "../../features/saved-posts/saved-posts.slice";
 import { RootState } from "../../reducer";
 import PostsList from "./PostsList";
 
@@ -14,9 +17,13 @@ const PostsPage: FunctionComponent = () => {
   const { isFetching, displayPosts, err } = useSelector(
     (state: RootState) => state.posts
   );
+  const savedPostKeys = useSelector(
+    (state: RootState) => state.savedPosts.postKeys
+  );
 
   useEffect(() => {
     dispatch(fetchTopStories());
+    dispatch(loadSavedPosts());
   }, [dispatch]);
 
   const handleSavePostClicked = (post: HackerPost) => {
@@ -31,6 +38,7 @@ const PostsPage: FunctionComponent = () => {
         <PostsList
           posts={displayPosts}
           onSavePostClicked={handleSavePostClicked}
+          savedPostKeys={savedPostKeys}
         />
       )}
     </Container>

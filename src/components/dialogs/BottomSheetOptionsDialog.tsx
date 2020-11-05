@@ -5,6 +5,7 @@ interface Option {
   name: string;
   key: string;
   iconUrl: string;
+  disabled?: boolean;
 }
 
 interface Props {
