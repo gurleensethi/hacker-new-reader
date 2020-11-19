@@ -2,7 +2,6 @@ import React, { FunctionComponent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { HackerPost } from "../../api/hackerNewsApi";
-import breakPoints from "../../config/break-points";
 import { fetchTopStories } from "../../features/posts/posts.slice";
 import {
   loadSavedPosts,
