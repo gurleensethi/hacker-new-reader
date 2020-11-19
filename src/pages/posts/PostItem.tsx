@@ -38,54 +38,37 @@ const PostItem: React.FC<Props> = ({ post, onSavePostClicked, isSaved }) => {
   };
 
   return (
-    <>
-      <Container href={post.url} target="_blank" rel="noopener noreferrer">
-        <Content>
-          <Main>
-            <Title>{post.title}</Title>
-            <Hostname>{post.hostname}</Hostname>
-          </Main>
-          <Info>
-            <Date>{dayjs(post.time * 1000).format("ddd DD/MM/YYYY")}</Date>
-            <Comments>{post.descendants}</Comments>
-            <img
-              src={process.env.PUBLIC_URL + "/images/comment.svg"}
+    <Container href={post.url} target="_blank" rel="noopener noreferrer">
+      <Content>
+        <Main>
+          <Title>{post.title}</Title>
+          <Hostname>{post.hostname}</Hostname>
+        </Main>
+        <Info>
+          <Date>{dayjs(post.time * 1000).format("ddd DD/MM/YYYY")}</Date>
+          <Comments>{post.descendants}</Comments>
+          <img
+            src={process.env.PUBLIC_URL + "/images/comment.svg"}
+            alt="comment icon"
+            height="16"
+          />
+          <Score>{post.score}</Score>
+          <img
+            src={process.env.PUBLIC_URL + "/images/score.svg"}
+            alt="comment icon"
+            height="16"
+          />
+        </Info>
+      </Content>
+      <Options>
+        {deviceType === DeviceType.MOBILE ? (
+          <>
+            <MoreOptionsIcon
+              onClick={handleOptionsClick}
+              src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
               alt="comment icon"
-              height="16"
             />
-            <Score>{post.score}</Score>
-            <img
-              src={process.env.PUBLIC_URL + "/images/score.svg"}
-              alt="comment icon"
-              height="16"
-            />
-          </Info>
-        </Content>
-        <Options>
-          {deviceType === DeviceType.MOBILE ? (
-            <>
-              <MoreOptionsIcon
-                onClick={handleOptionsClick}
-                src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
-                alt="comment icon"
-              />
-              <BottomSheetOptionsDialog
-                isOpen={isOptionsMenuOpen}
-                onClose={handleDialogClose}
-                options={[
-                  {
-                    name: isSaved ? "Already Saved" : "Save for later",
-                    key: "save_later",
-                    iconUrl: process.env.PUBLIC_URL + "/images/save.svg",
-                    disabled: isSaved,
-                  },
-                ]}
-                onOptionClicked={handleMenuOptionClicked}
-              />
-            </>
-          ) : (
-            <DropdownMenu
-              alignment="right"
+            <BottomSheetOptionsDialog
               isOpen={isOptionsMenuOpen}
               onClose={handleDialogClose}
               options={[
@@ -96,23 +79,38 @@ const PostItem: React.FC<Props> = ({ post, onSavePostClicked, isSaved }) => {
                   disabled: isSaved,
                 },
               ]}
-              onOptionClick={handleMenuOptionClicked}
-              icon={() => (
-                <MoreOptionsIcon
-                  onClick={handleOptionsClick}
-                  src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
-                  alt="comment icon"
-                />
-              )}
+              onOptionClicked={handleMenuOptionClicked}
             />
-          )}
-          <OpenIcon
-            src={process.env.PUBLIC_URL + "/images/open-in-new.svg"}
-            alt="comment icon"
+          </>
+        ) : (
+          <DropdownMenu
+            alignment="right"
+            isOpen={isOptionsMenuOpen}
+            onClose={handleDialogClose}
+            options={[
+              {
+                name: isSaved ? "Already Saved" : "Save for later",
+                key: "save_later",
+                iconUrl: process.env.PUBLIC_URL + "/images/save.svg",
+                disabled: isSaved,
+              },
+            ]}
+            onOptionClick={handleMenuOptionClicked}
+            icon={() => (
+              <MoreOptionsIcon
+                onClick={handleOptionsClick}
+                src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
+                alt="comment icon"
+              />
+            )}
           />
-        </Options>
-      </Container>
-    </>
+        )}
+        <OpenIcon
+          src={process.env.PUBLIC_URL + "/images/open-in-new.svg"}
+          alt="comment icon"
+        />
+      </Options>
+    </Container>
   );
 };
 
@@ -133,15 +131,18 @@ const OpenIcon = styled.img`
 
 const Container = styled.a`
   position: relative;
-  padding: 16px;
-  margin-bottom: 24px;
-  border-radius: 6px;
+  padding: 20px;
   transition: 0.3s;
   display: flex;
   align-items: stretch;
   text-decoration: none;
   color: black;
   outline: none;
+  border-bottom: 1px solid #e1e1e1;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
 
   &:hover {
     cursor: pointer;
@@ -150,6 +151,8 @@ const Container = styled.a`
   }
 
   ${breakPoints.tablet} {
+    padding: 32px;
+
     &:hover ${OpenIcon} {
       right: 0px;
       opacity: 1;

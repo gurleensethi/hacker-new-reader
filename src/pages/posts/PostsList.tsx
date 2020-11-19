@@ -7,10 +7,14 @@ import PostItem from "./PostItem";
 const List = styled.div`
   display: flex;
   flex-direction: column;
+  box-shadow: 2px 2px 20px #e1e1e1;
+  border-radius: 8px;
+  margin: 16px;
+  overflow: hidden;
 
   ${breakPoints.tablet} {
-    width: 60%;
-    margin: 0 auto;
+    max-width: 60%;
+    margin: 40px auto;
   }
 `;
 
@@ -26,18 +30,16 @@ const PostsList: React.FC<Props> = ({
   savedPostKeys,
 }) => {
   return (
-    <>
-      <List>
-        {posts.map((post) => (
-          <PostItem
-            key={post.id}
-            post={post}
-            onSavePostClicked={() => onSavePostClicked(post)}
-            isSaved={!!savedPostKeys[post.id]}
-          />
-        ))}
-      </List>
-    </>
+    <List>
+      {posts.map((post) => (
+        <PostItem
+          key={post.id}
+          post={post}
+          onSavePostClicked={() => onSavePostClicked(post)}
+          isSaved={!!savedPostKeys[post.id]}
+        />
+      ))}
+    </List>
   );
 };
 
