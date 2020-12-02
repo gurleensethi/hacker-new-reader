@@ -10,6 +10,12 @@ const List = styled.div`
   overflow: scroll;
   background-color: white;
   padding: 28px 0px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &-::-webkit-scrollbar {
+    display: none;
+  }
 
   ${breakPoints.tablet} {
     max-width: 70%;
