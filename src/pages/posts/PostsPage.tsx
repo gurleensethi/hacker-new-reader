@@ -10,7 +10,12 @@ import {
 import { RootState } from "../../reducer";
 import PostsList from "./PostsList";
 
-const Container = styled.div``;
+const Container = styled.div`
+  flex: 1;
+  height: 100%;
+  padding-bottom: 64px;
+  overflow: hidden;
+`;
 
 const PostsPage: FunctionComponent = () => {
   const dispatch = useDispatch();

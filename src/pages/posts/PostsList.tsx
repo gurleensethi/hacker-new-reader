@@ -9,11 +9,12 @@ const List = styled.div`
   flex-direction: column;
   box-shadow: 2px 2px 20px #e1e1e1;
   border-radius: 8px;
+  height: 100%;
+  overflow: scroll;
   margin: 16px;
-  overflow: hidden;
 
   ${breakPoints.tablet} {
-    max-width: 60%;
+    max-width: 70%;
     margin: 40px auto;
   }
 `;
