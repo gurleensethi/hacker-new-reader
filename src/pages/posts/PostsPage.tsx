@@ -17,6 +17,30 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
+const ShadowContainer = styled.div`
+  height: 100%;
+  position: relative;
+`;
+
+const ShadowTop = styled.div`
+  background: linear-gradient(white, rgba(255, 255, 255, 0.2));
+  position: absolute;
+  height: 50px;
+  width: 100%;
+  z-index: 10000;
+`;
+
+const ShadowBottom = styled.div`
+  background: linear-gradient(rgba(255, 255, 255, 0.2), white);
+  position: absolute;
+  height: 50px;
+  width: 100%;
+  z-index: 10000;
+  /* background-color: red; */
+  bottom: 0px;
+  z-index: 10000;
+`;
+
 const PostsPage: FunctionComponent = () => {
   const dispatch = useDispatch();
   const { isFetching, displayPosts, err } = useSelector(
@@ -40,11 +64,15 @@ const PostsPage: FunctionComponent = () => {
       {isFetching && <div>Fetching...</div>}
       {err && <div>{err}</div>}
       {!err && (
-        <PostsList
-          posts={displayPosts}
-          onSavePostClicked={handleSavePostClicked}
-          savedPostKeys={savedPostKeys}
-        />
+        <ShadowContainer>
+          <ShadowTop />
+          <PostsList
+            posts={displayPosts}
+            onSavePostClicked={handleSavePostClicked}
+            savedPostKeys={savedPostKeys}
+          />
+          <ShadowBottom />
+        </ShadowContainer>
       )}
     </Container>
   );

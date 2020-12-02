@@ -12,6 +12,7 @@ const TopBar = styled.div`
   display: flex;
   z-index: 1;
   padding: 16px;
+  background-color: transparent;
 `;
 
 const Title = styled.div`

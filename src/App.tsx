@@ -7,6 +7,7 @@ import { RootState } from "./reducer";
 
 const Container = styled.div`
   height: 100vh;
+  overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 `;

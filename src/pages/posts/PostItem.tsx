@@ -38,37 +38,59 @@ const PostItem: React.FC<Props> = ({ post, onSavePostClicked, isSaved }) => {
   };
 
   return (
-    <Container href={post.url} target="_blank" rel="noopener noreferrer">
-      <Content>
-        <Main>
-          <Title>{post.title}</Title>
-          <Hostname>{post.hostname}</Hostname>
-        </Main>
-        <Info>
-          <Date>{dayjs(post.time * 1000).format("ddd DD/MM/YYYY")}</Date>
-          <Comments>{post.descendants}</Comments>
-          <img
-            src={process.env.PUBLIC_URL + "/images/comment.svg"}
-            alt="comment icon"
-            height="16"
-          />
-          <Score>{post.score}</Score>
-          <img
-            src={process.env.PUBLIC_URL + "/images/score.svg"}
-            alt="comment icon"
-            height="16"
-          />
-        </Info>
-      </Content>
-      <Options>
-        {deviceType === DeviceType.MOBILE ? (
-          <>
-            <MoreOptionsIcon
-              onClick={handleOptionsClick}
-              src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
+    <Root>
+      <Connector>
+        <ConnectorLine />
+        <ConnectorCircle />
+        <ConnectorLine />
+      </Connector>
+      <Container href={post.url} target="_blank" rel="noopener noreferrer">
+        <Content>
+          <Main>
+            <Title>{post.title}</Title>
+            <Hostname>{post.hostname}</Hostname>
+          </Main>
+          <Info>
+            <Date>{dayjs(post.time * 1000).format("ddd DD/MM/YYYY")}</Date>
+            <Comments>{post.descendants}</Comments>
+            <img
+              src={process.env.PUBLIC_URL + "/images/comment.svg"}
               alt="comment icon"
+              height="14"
             />
-            <BottomSheetOptionsDialog
+            <Score>{post.score}</Score>
+            <img
+              src={process.env.PUBLIC_URL + "/images/score.svg"}
+              alt="comment icon"
+              height="14"
+            />
+          </Info>
+        </Content>
+        <Options>
+          {deviceType === DeviceType.MOBILE ? (
+            <>
+              <MoreOptionsIcon
+                onClick={handleOptionsClick}
+                src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
+                alt="comment icon"
+              />
+              <BottomSheetOptionsDialog
+                isOpen={isOptionsMenuOpen}
+                onClose={handleDialogClose}
+                options={[
+                  {
+                    name: isSaved ? "Already Saved" : "Save for later",
+                    key: "save_later",
+                    iconUrl: process.env.PUBLIC_URL + "/images/save.svg",
+                    disabled: isSaved,
+                  },
+                ]}
+                onOptionClicked={handleMenuOptionClicked}
+              />
+            </>
+          ) : (
+            <DropdownMenu
+              alignment="right"
               isOpen={isOptionsMenuOpen}
               onClose={handleDialogClose}
               options={[
@@ -79,38 +101,24 @@ const PostItem: React.FC<Props> = ({ post, onSavePostClicked, isSaved }) => {
                   disabled: isSaved,
                 },
               ]}
-              onOptionClicked={handleMenuOptionClicked}
+              onOptionClick={handleMenuOptionClicked}
+              icon={() => (
+                <MoreOptionsIcon
+                  onClick={handleOptionsClick}
+                  src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
+                  alt="comment icon"
+                />
+              )}
             />
-          </>
-        ) : (
-          <DropdownMenu
-            alignment="right"
-            isOpen={isOptionsMenuOpen}
-            onClose={handleDialogClose}
-            options={[
-              {
-                name: isSaved ? "Already Saved" : "Save for later",
-                key: "save_later",
-                iconUrl: process.env.PUBLIC_URL + "/images/save.svg",
-                disabled: isSaved,
-              },
-            ]}
-            onOptionClick={handleMenuOptionClicked}
-            icon={() => (
-              <MoreOptionsIcon
-                onClick={handleOptionsClick}
-                src={process.env.PUBLIC_URL + "/images/vertical-more.svg"}
-                alt="comment icon"
-              />
-            )}
+          )}
+          <OpenIcon
+            src={process.env.PUBLIC_URL + "/images/open-in-new.svg"}
+            alt="comment icon"
+            height="18px"
           />
-        )}
-        <OpenIcon
-          src={process.env.PUBLIC_URL + "/images/open-in-new.svg"}
-          alt="comment icon"
-        />
-      </Options>
-    </Container>
+        </Options>
+      </Container>
+    </Root>
   );
 };
 
@@ -129,29 +137,64 @@ const OpenIcon = styled.img`
   }
 `;
 
+const ConnectorLine = styled.div`
+  width: 2px;
+  background-color: #4c98fa;
+  flex: 1;
+`;
+
+const ConnectorCircle = styled.div`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #4c98fa;
+  margin: 4px 0px;
+`;
+
+const Connector = styled.div`
+  width: 2px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  margin-right: 16px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Root = styled.div`
+  display: flex;
+  margin: 0px 16px;
+
+  &:first-of-type ${ConnectorLine}:first-of-type {
+    visibility: hidden;
+  }
+
+  &:last-of-type ${ConnectorLine}:last-of-type {
+    visibility: hidden;
+  }
+`;
+
 const Container = styled.a`
+  flex: 1;
   position: relative;
-  padding: 20px;
+  padding: 8px 12px;
   transition: 0.3s;
   display: flex;
   align-items: stretch;
   text-decoration: none;
   color: black;
   outline: none;
-  border-bottom: 1px solid #e1e1e1;
-
-  &:last-of-type {
-    border-bottom: none;
-  }
+  /* border-bottom: 1px solid #e1e1e1; */
+  background-color: #f8f9fd;
+  border-radius: 6px;
+  margin-bottom: 8px;
 
   &:hover {
     cursor: pointer;
-    box-shadow: 0px 4px 10px rgb(230, 230, 230),
-      -4px 4px 10px rgb(230, 230, 230), 4px 4px 10px rgb(230, 230, 230);
   }
 
   ${breakPoints.tablet} {
-    padding: 32px;
+    padding: 16px 24px;
 
     &:hover ${OpenIcon} {
       right: 0px;
@@ -170,14 +213,15 @@ const Content = styled.div`
 const Main = styled.div`
   display: flex;
   flex: 1;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   align-items: flex-start;
   flex-direction: column;
 `;
 
 const Title = styled.div`
-  font-size: 22px;
+  font-size: 18px;
   margin-bottom: 4px;
+  font-weight: 500;
 `;
 
 const Hostname = styled.div`
@@ -191,14 +235,14 @@ const Info = styled.div`
 `;
 
 const Date = styled.div`
-  font-size: 16px;
+  font-size: 12px;
   color: grey;
   flex: 1;
   min-width: 120px;
 `;
 
 const Comments = styled.div`
-  font-size: 16px;
+  font-size: 12px;
   color: grey;
   padding: 3px 6px;
   display: inline-block;
@@ -209,7 +253,7 @@ const Comments = styled.div`
 `;
 
 const Score = styled.div`
-  font-size: 16px;
+  font-size: 12px;
   color: grey;
   padding: 3px 6px;
   display: inline-block;
